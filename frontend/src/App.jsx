@@ -237,7 +237,7 @@ function App() {
                   <h3>Global Health Trends</h3>
                 </div>
               </div>
-              <div className="image-placeholder"><div className="placeholder-content"><h3>Banner Image Space</h3><p>You can add your large presentation image here.</p></div></div>
+              <div className="image-placeholder"><div className="placeholder-content"><h3></h3></div></div>
             </div>
           )}
 
