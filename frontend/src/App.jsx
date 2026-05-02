@@ -1,3 +1,5 @@
+import logoImg from './assets/logo.png'
+import careImg from './assets/care.jpeg'
 import { useState, useEffect } from 'react'
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, ScatterChart, Scatter, ZAxis } from 'recharts'
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from "react-simple-maps"
@@ -45,7 +47,7 @@ function App() {
     Polio_Vaccination_Coverage: 83, Total_Health_Expenditure: 3.78,
     Diphtheria_Vaccination_Coverage: 8, HIV_AIDS_Prevalence_Rate: 0.1,
     Gross_Domestic_Product: 1762.24, Total_Population: 18914977,
-    Thinness: 6.4, Nation: 'Syrian Arab Republic', Country_Category: 'Developing'
+    Thinness: 6.4, Nation: 'United Arab Emirates', Country_Category: 'Developing'
   })
   const [prediction, setPrediction] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -129,7 +131,7 @@ function App() {
     { name: 'Developing', value: filteredData.filter(d => d.Country_Category === 'Developing').length },
     { name: 'Developed', value: filteredData.filter(d => d.Country_Category === 'Developed').length }
   ]
-  const COLORS = ['#14b8a6', '#fcd34d']
+  const COLORS = ['#5e0596', '#ffc505']
 
   const trendData = Object.values(filteredData.reduce((acc, d) => {
     if (!acc[d.Survey_Year]) acc[d.Survey_Year] = { year: d.Survey_Year, total: 0, count: 0 }
@@ -167,17 +169,17 @@ function App() {
       <div className="glass-panel">
         <aside className="sidebar">
           <div className="logo-container">
-            <h2>🌍 LifeHub</h2>
+            <img src={logoImg} alt="LifeHub Logo" className="main-logo" />
           </div>
           <nav className="nav-menu">
             <button className={`nav-item ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>
-              <span className="icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="22" height="22" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg></span> Dashboard
+              <span className="icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="22" height="22" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg></span> Home
             </button>
             <button className={`nav-item ${activeTab === 'predict' ? 'active' : ''}`} onClick={() => setActiveTab('predict')}>
               <span className="icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="22" height="22" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg></span> Prediction
             </button>
             <button className={`nav-item ${activeTab === 'explore' ? 'active' : ''}`} onClick={() => setActiveTab('explore')}>
-              <span className="icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="22" height="22" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg></span> Data Analysis
+              <span className="icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="22" height="22" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg></span> Dashboard
             </button>
           </nav>
 
@@ -237,7 +239,9 @@ function App() {
                   <h3>Global Health Trends</h3>
                 </div>
               </div>
-              <div className="image-placeholder"><div className="placeholder-content"><h3></h3></div></div>
+              <div className="image-placeholder">
+                <img src={careImg} alt="Healthcare Support" className="hero-image" />
+              </div>
             </div>
           )}
 
@@ -305,7 +309,7 @@ function App() {
                       <XAxis dataKey="year" axisLine={false} tickLine={false} />
                       <YAxis axisLine={false} tickLine={false} />
                       <RechartsTooltip />
-                      <Line type="monotone" dataKey="value" stroke="#14b8a6" strokeWidth={3} dot={false} />
+                      <Line type="monotone" dataKey="value" stroke="#7914b8" strokeWidth={3} dot={false} />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
@@ -317,7 +321,7 @@ function App() {
                       <XAxis dataKey="Nation" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
                       <YAxis axisLine={false} tickLine={false} />
                       <RechartsTooltip />
-                      <Bar dataKey="value" fill="#0ea5e9" radius={[5, 5, 0, 0]} />
+                      <Bar dataKey="value" fill="#520596" radius={[5, 5, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -330,14 +334,14 @@ function App() {
                       <YAxis type="number" dataKey="y" name="Life Expectancy" axisLine={false} tickLine={false} />
                       <ZAxis range={[50, 50]} />
                       <RechartsTooltip cursor={{ strokeDasharray: '3 3' }} />
-                      <Scatter name="Data" data={scatterData} fill="#f43f5e" />
+                      <Scatter name="Data" data={scatterData} fill="#871fd6db" />
                     </ScatterChart>
                   </ResponsiveContainer>
                 </div>
               </div>
 
               <div className="card map-container" style={{ marginTop: '2rem', position: 'relative', overflow: 'hidden' }}>
-                <h3 style={{ marginBottom: '1.5rem', color: '#1f2937', fontSize: '1rem' }}>Global Map</h3>
+                <h3 style={{ marginBottom: '1.5rem', color: '#491767', fontSize: '1rem' }}>Global Map</h3>
                 <ComposableMap projectionConfig={{ rotate: [-10, 0, 0], scale: 170 }}>
                   <ZoomableGroup zoom={1} maxZoom={5}>
                     <Geographies geography={geoUrl}>
@@ -359,9 +363,9 @@ function App() {
                               onMouseLeave={() => setTooltip({ show: false, content: '', x: 0, y: 0 })}
                               onClick={() => handleCountryClick(mapCountryName)}
                               style={{
-                                default: { fill: isSelected ? "#14b8a6" : "#cbd5e1", outline: "none", stroke: "#FFFFFF", strokeWidth: 0.5 },
-                                hover: { fill: "#0ea5e9", outline: "none", cursor: "pointer" },
-                                pressed: { fill: "#0284c7", outline: "none" }
+                                default: { fill: isSelected ? "#330067" : "#3b2b4392", outline: "none", stroke: "#FFFFFF", strokeWidth: 0.5 },
+                                hover: { fill: "#ff6aee", outline: "none", cursor: "pointer" },
+                                pressed: { fill: "#ff6aee", outline: "none" }
                               }}
                             />
                           );
