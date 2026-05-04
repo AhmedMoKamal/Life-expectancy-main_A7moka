@@ -86,7 +86,7 @@ function App() {
   const handleCountryClick = (mapCountryName) => {
     if (!mapCountryName) return;
 
-    //Use the dictionary to look up the name if it exists; if not, use the name as is.
+    //Use dictionary to look up the name if it exists; if not, use the name as is.
     const datasetCountryName = countryNameMapping[mapCountryName] || mapCountryName;
 
     if (selectedCountry === datasetCountryName) {
