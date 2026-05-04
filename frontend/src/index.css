@@ -25,7 +25,7 @@ body {
   height: 100vh;
 }
 
-/* شيلنا أي خلفية من هنا عشان الأخضر يبان ورا السايد بار */
+
 .glass-panel {
   display: flex;
   height: 100%;
@@ -35,7 +35,7 @@ body {
   border: none;
 }
 
-/* 2. السايد بار: شفاف تماما */
+
 .sidebar {
   width: 280px;
   height: 100vh;
@@ -48,7 +48,7 @@ body {
   flex-direction: column;
 }
 
-/* بوكس اللوجو */
+
 .logo-container {
   margin-bottom: 3.4rem;
   padding-left: 0rem;
@@ -57,12 +57,11 @@ body {
   justify-content: flex-start;
 }
 
-/* مقاس وتظبيط اللوجو نفسه */
+
 .main-logo {
   max-width: 100%;
   height: auto;
   max-height: 68px;
-  /* المقاس ده هيخليه شيك وملموم، تقدر تكبره أو تصغره براحتك */
   object-fit: contain;
   display: block;
 }
@@ -83,7 +82,6 @@ body {
   font-size: 1.2rem;
   font-weight: 600;
   color: #ffffff;
-  /* أخضر فاتح جداً */
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: left;
@@ -100,7 +98,7 @@ body {
   color: #ffffff;
 }
 
-/* الزرار المتأكتف في السايد بار (جراديينت زمردي فخم) */
+
 .nav-item.active {
   background: linear-gradient(135deg, #7b00fffd, #caaeffc8);
   color: white;
@@ -156,7 +154,7 @@ body {
   color: white;
 }
 
-/* 3. الشاشة الرئيسية הפاتحة الطايرة (أخضر مينت فاتح جداً) */
+
 .content-area {
   flex: 1;
   height: calc(100vh - 0.5rem);
@@ -197,7 +195,7 @@ body {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
-/* بوكس التوقع الكبير: جراديينت أخضر غابات غامق */
+
 .prediction-card {
   background: linear-gradient(135deg, #ddc4fe80 0%, #e3c5ff80 40%, #efd5ff82 100%) !important;
   border: 1px solid rgba(25, 1, 50, 0.269) !important;
@@ -316,7 +314,6 @@ body {
   border-radius: 12px;
   border: 1px solid rgba(202, 149, 236, 0.2);
   background: rgba(32, 32, 32, 0.158);
-  /* تغميق خفيف للمدخلات عشان تنطق */
   font-size: 1.1rem;
   transition: all 0.3s;
   color: #0b0017;
@@ -354,7 +351,7 @@ body {
   box-shadow: 0 8px 20px rgba(109, 109, 109, 0.098);
 }
 
-/* بوكس النتيجة */
+
 .result-box {
   margin-top: 2.5rem;
   padding: 2rem;
