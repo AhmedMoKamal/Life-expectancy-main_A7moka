@@ -1,13 +1,14 @@
+import Chatbot from './Chatbot';
 import logoImg from './assets/logo.png'
 import careImg from './assets/care.jpeg'
 import { useState, useEffect } from 'react'
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, ScatterChart, Scatter, ZAxis } from 'recharts'
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from "react-simple-maps"
+import ReactMarkdown from 'react-markdown';
 import './App.css'
 
 const geoUrl = "https://unpkg.com/world-atlas@2.0.2/countries-110m.json"
 
-// Dictionary linking map names 
 const countryNameMapping = {
   "Russia": "Russian Federation",
   "Iran": "Iran (Islamic Republic of)",
@@ -52,6 +53,10 @@ function App() {
   const [prediction, setPrediction] = useState(null)
   const [loading, setLoading] = useState(false)
 
+
+  const [analysisResults, setAnalysisResults] = useState({});
+  const [analyzingChart, setAnalyzingChart] = useState(null);
+
   const featuresList = [
     'Mortality_Adults', 'Infant_Deaths_Count', 'Alcohol_Consumption_Rate',
     'Hepatitis_B_Vaccination_Coverage', 'Measles_Infection_Count', 'Body_Mass_Index_Avg',
@@ -83,18 +88,19 @@ function App() {
     setFilteredData(temp)
   }, [analysisOption, selectedCountry, selectedYear, allData])
 
+
+  useEffect(() => {
+    setAnalysisResults({});
+  }, [selectedFeature, analysisOption, selectedCountry, selectedYear]);
+
   const handleCountryClick = (mapCountryName) => {
     if (!mapCountryName) return;
-
-    //Use dictionary to look up the name if it exists; if not, use the name as is.
     const datasetCountryName = countryNameMapping[mapCountryName] || mapCountryName;
-
     if (selectedCountry === datasetCountryName) {
       setSelectedCountry('');
       setAnalysisOption('Overall Data Over All Years');
       return;
     }
-
     const exists = allData.some(d => d.Nation === datasetCountryName);
     if (exists) {
       setSelectedCountry(datasetCountryName);
@@ -127,6 +133,38 @@ function App() {
     setLoading(false)
   }
 
+
+  const handleAnalyzeChart = async (chartId, chartTitle, chartData) => {
+    setAnalyzingChart(chartId);
+
+
+    let filterContext = "Global Data (All Countries)";
+    if (analysisOption === 'Specific Country Over All Years') {
+      filterContext = `IMPORTANT NOTE: The data is currently filtered ONLY for ${selectedCountry} across all years. Please mention this context in your analysis.`;
+    } else if (analysisOption === 'Specific Country Within a Specific Year') {
+      filterContext = `IMPORTANT NOTE: The data is currently filtered ONLY for ${selectedCountry} in the year ${selectedYear}. Please mention this context in your analysis.`;
+    }
+
+
+    const smartTitle = `${chartTitle} | ${filterContext}`;
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/analyze-chart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chart_title: smartTitle,
+          chart_data: JSON.stringify(chartData).substring(0, 3000)
+        })
+      });
+      const data = await response.json();
+      setAnalysisResults(prev => ({ ...prev, [chartId]: data.analysis }));
+    } catch (error) {
+      setAnalysisResults(prev => ({ ...prev, [chartId]: "❌ Connection Error. Please try again." }));
+    }
+    setAnalyzingChart(null);
+  }
+
   const pieData = [
     { name: 'Developing', value: filteredData.filter(d => d.Country_Category === 'Developing').length },
     { name: 'Developed', value: filteredData.filter(d => d.Country_Category === 'Developed').length }
@@ -152,6 +190,18 @@ function App() {
     y: d.Life_Expectancy_Years,
     name: d.Nation
   })).slice(0, 500)
+
+
+  const analyzeBtnStyle = {
+    background: 'linear-gradient(135deg, #4F46E5, #7914b8)', color: 'white', border: 'none',
+    padding: '6px 15px', borderRadius: '20px', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold',
+    boxShadow: '0 2px 5px rgba(0,0,0,0.2)', transition: 'all 0.3s ease'
+  };
+  const analysisBoxStyle = {
+    marginTop: '15px', padding: '15px', background: '#f8f9fa', borderRadius: '8px',
+    borderLeft: '4px solid #7914b8', fontSize: '0.9rem', textAlign: 'left',
+    overflowY: 'auto', maxHeight: '200px', fontFamily: "'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Noto Color Emoji'"
+  };
 
   return (
     <div className="app-layout">
@@ -288,8 +338,18 @@ function App() {
               </div>
 
               <div className="charts-grid-main">
+                {/* --- Chart 1: Pie Chart --- */}
                 <div className="card chart-card">
-                  <h3>Distribution of {selectedFeature.replace(/_/g, ' ')}</h3>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                    <h3 style={{ margin: 0 }}>Distribution of {selectedFeature.replace(/_/g, ' ')}</h3>
+                    <button
+                      style={analyzeBtnStyle}
+                      onClick={() => handleAnalyzeChart('pie', `Distribution of ${selectedFeature}`, pieData)}
+                      disabled={analyzingChart === 'pie'}
+                    >
+                      {analyzingChart === 'pie' ? '⏳ Analyzing...' : '✨ Analyze'}
+                    </button>
+                  </div>
                   <ResponsiveContainer width="100%" height={250}>
                     <PieChart>
                       <Pie data={pieData} innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
@@ -299,10 +359,25 @@ function App() {
                       <Legend />
                     </PieChart>
                   </ResponsiveContainer>
+                  {analysisResults['pie'] && (
+                    <div style={analysisBoxStyle} className="fade-in">
+                      <ReactMarkdown>{analysisResults['pie']}</ReactMarkdown>
+                    </div>
+                  )}
                 </div>
 
+                {/* --- Chart 2: Line Chart --- */}
                 <div className="card chart-card">
-                  <h3>{selectedFeature.replace(/_/g, ' ')} Trend Over Years</h3>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                    <h3 style={{ margin: 0 }}>{selectedFeature.replace(/_/g, ' ')} Trend Over Years</h3>
+                    <button
+                      style={analyzeBtnStyle}
+                      onClick={() => handleAnalyzeChart('line', `${selectedFeature} Trend Over Years`, trendData)}
+                      disabled={analyzingChart === 'line'}
+                    >
+                      {analyzingChart === 'line' ? '⏳ Analyzing...' : '✨ Analyze'}
+                    </button>
+                  </div>
                   <ResponsiveContainer width="100%" height={250}>
                     <LineChart data={trendData}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -312,10 +387,29 @@ function App() {
                       <Line type="monotone" dataKey="value" stroke="#7914b8" strokeWidth={3} dot={false} />
                     </LineChart>
                   </ResponsiveContainer>
+                  {analysisResults['line'] && (
+                    <div style={analysisBoxStyle} className="fade-in">
+                      <ReactMarkdown>{analysisResults['line']}</ReactMarkdown>
+                    </div>
+                  )}
                 </div>
 
+                {/* --- Chart 3: Bar Chart --- */}
                 <div className="card chart-card">
-                  <h3>Top 10 Countries by {selectedFeature.replace(/_/g, ' ')}</h3>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                    <h3 style={{ margin: 0 }}>
+                      {analysisOption === 'Overall Data Over All Years'
+                        ? `Top 10 Countries by ${selectedFeature.replace(/_/g, ' ')}`
+                        : `${selectedFeature.replace(/_/g, ' ')} for ${selectedCountry}`}
+                    </h3>
+                    <button
+                      style={analyzeBtnStyle}
+                      onClick={() => handleAnalyzeChart('bar', `Top 10 Countries by ${selectedFeature}`, barData)}
+                      disabled={analyzingChart === 'bar'}
+                    >
+                      {analyzingChart === 'bar' ? '⏳ Analyzing...' : '✨ Analyze'}
+                    </button>
+                  </div>
                   <ResponsiveContainer width="100%" height={250}>
                     <BarChart data={barData}>
                       <XAxis dataKey="Nation" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
@@ -324,10 +418,25 @@ function App() {
                       <Bar dataKey="value" fill="#520596" radius={[5, 5, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
+                  {analysisResults['bar'] && (
+                    <div style={analysisBoxStyle} className="fade-in">
+                      <ReactMarkdown>{analysisResults['bar']}</ReactMarkdown>
+                    </div>
+                  )}
                 </div>
 
+                {/* --- Chart 4: Scatter Chart --- */}
                 <div className="card chart-card">
-                  <h3>Correlation: {selectedFeature.replace(/_/g, ' ')} vs Life Expectancy</h3>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                    <h3 style={{ margin: 0 }}>Correlation: {selectedFeature.replace(/_/g, ' ')}</h3>
+                    <button
+                      style={analyzeBtnStyle}
+                      onClick={() => handleAnalyzeChart('scatter', `Correlation between ${selectedFeature} and Life Expectancy`, scatterData)}
+                      disabled={analyzingChart === 'scatter'}
+                    >
+                      {analyzingChart === 'scatter' ? '⏳ Analyzing...' : '✨ Analyze'}
+                    </button>
+                  </div>
                   <ResponsiveContainer width="100%" height={250}>
                     <ScatterChart>
                       <XAxis type="number" dataKey="x" name={selectedFeature} axisLine={false} tickLine={false} />
@@ -337,6 +446,11 @@ function App() {
                       <Scatter name="Data" data={scatterData} fill="#871fd6db" />
                     </ScatterChart>
                   </ResponsiveContainer>
+                  {analysisResults['scatter'] && (
+                    <div style={analysisBoxStyle} className="fade-in">
+                      <ReactMarkdown>{analysisResults['scatter']}</ReactMarkdown>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -380,6 +494,7 @@ function App() {
           )}
         </main>
       </div>
+      <Chatbot />
     </div>
   )
 }
