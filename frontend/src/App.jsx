@@ -68,18 +68,18 @@ function App() {
     fetch('https://ahmedmokamal-lifehub-backend.hf.space/api/data')
       .then(res => res.json())
       .then(data => {
-        // بنتشيك الأول: هل اللي جاي ده Array؟
+
         if (Array.isArray(data)) {
           setAllData(data);
           setFilteredData(data);
         } else {
-          // لو مش Array (زي رسالة الترحيب) بنخليها فاضية عشان الموقع ميكراشش
-          console.log("الباك إند باعت رسالة مش داتا:", data);
+
+          console.log("backend sent a message, not data:", data);
           setAllData([]);
           setFilteredData([]);
         }
       })
-      .catch(err => console.log("في مشكلة في الاتصال:", err));
+      .catch(err => console.log("There is a problem with the connection:", err));
   }, []);
 
   useEffect(() => {
