@@ -297,32 +297,41 @@ body {
 
 
 
-
 @media (max-width: 768px) {
 
-  /* بنجبر الأب الرئيسي إنه يرصهم تحت بعض ويمنع خروجهم بره الشاشة */
+  /* بنفك القفشة بتاعة الشاشة كاملة ونسمح بالاسكرول */
+  body,
+  html,
+  #root,
   .app-layout {
-    display: flex !important;
-    flex-direction: column !important;
+    overflow-y: auto !important;
     overflow-x: hidden !important;
-    width: 100% !important;
+    height: auto !important;
   }
 
-  /* بنخلي القائمة الجانبية (الـ Sidebar) تاخد عرض الشاشة وتبقى فوق */
-  .app-layout> :first-child {
+  /* بنخلي اللوحة الازاز اللي شايلة الموقع ترص الحاجات تحت بعض */
+  .glass-panel {
+    display: flex !important;
+    flex-direction: column !important;
     width: 100% !important;
     height: auto !important;
+    min-height: 100vh !important;
+  }
+
+  /* بنخلي القائمة الجانبية تاخد عرض الشاشة وتبقى فوق */
+  .sidebar {
+    width: 100% !important;
     position: relative !important;
-    /* لو كانت لازقة في الشاشة بنفكها */
+    height: auto !important;
     min-height: unset !important;
     padding-bottom: 20px !important;
   }
 
-  /* بنخلي الشاشة البيضا تاخد راحتها تحت القائمة من غير ما تتزنق */
-  .app-layout> :last-child {
+  /* بنظبط الشاشة البيضا (المحتوى) عشان تنزل تحت القائمة براحتها */
+  .content-area {
     width: 100% !important;
     margin-left: 0 !important;
-    /* لو كانت متشفته يمين بنرجعها */
+    /* بنلغي أي مسافة كانت محجوزة للقائمة وهي على الشمال */
     padding: 15px !important;
     box-sizing: border-box !important;
   }
