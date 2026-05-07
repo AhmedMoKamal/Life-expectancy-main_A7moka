@@ -1,4 +1,4 @@
-# 🌍 LifeHub: AI-Driven Life Expectancy Analysis
+# 🌍 LifeHub: AI-Driven Life Expectancy Insights
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-View_Project-blue?style=for-the-badge)](https://life-expectancy-main-ahmed-mohamed.vercel.app)
 [![Frontend](https://img.shields.io/badge/Frontend-React_|_Vite-61DAFB?style=for-the-badge&logo=react)](#)
