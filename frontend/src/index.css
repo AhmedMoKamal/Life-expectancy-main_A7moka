@@ -17,12 +17,11 @@ body {
   color: #380074;
   margin: 0;
   padding: 0;
-  overflow: hidden;
 }
 
 .app-layout {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 
@@ -38,7 +37,7 @@ body {
 
 .sidebar {
   width: 280px;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0;
   padding: 2.5rem 1.5rem;
   background: transparent !important;
@@ -271,7 +270,6 @@ body {
   color: white;
   text-align: center;
   box-shadow: 0 20px 30px rgba(135, 135, 135, 0.363);
-  overflow: hidden;
 }
 
 

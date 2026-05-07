@@ -68,15 +68,19 @@ function App() {
     fetch('https://ahmedmokamal-lifehub-backend.hf.space/api/data')
       .then(res => res.json())
       .then(data => {
-        setAllData(data)
-        setFilteredData(data)
-        if (data.length > 0) {
-          setSelectedCountry(data[0].Nation)
-          setSelectedYear(data[0].Survey_Year)
+        // بنتشيك الأول: هل اللي جاي ده Array؟
+        if (Array.isArray(data)) {
+          setAllData(data);
+          setFilteredData(data);
+        } else {
+          // لو مش Array (زي رسالة الترحيب) بنخليها فاضية عشان الموقع ميكراشش
+          console.log("الباك إند باعت رسالة مش داتا:", data);
+          setAllData([]);
+          setFilteredData([]);
         }
       })
-      .catch(err => console.error("Error fetching CSV data:", err))
-  }, [])
+      .catch(err => console.log("في مشكلة في الاتصال:", err));
+  }, []);
 
   useEffect(() => {
     let temp = [...allData]
