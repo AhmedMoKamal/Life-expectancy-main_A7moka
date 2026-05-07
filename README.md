@@ -52,5 +52,5 @@ To run this project on your local machine, follow these steps:
 
 ### 1. Clone the repository
 ```bash
-git clone [https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME.git](https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME.git)
-cd YOUR_REPO_NAME
+git clone https://github.com/AhmedMoKamal/Life-expectancy-main_Ahmed_mohamed_kamal.git
+cd Life-expectancy-main_Ahmed_mohamed_kamal
