@@ -445,3 +445,16 @@ body {
 .content-area::-webkit-scrollbar-thumb:hover {
   background: rgba(77, 5, 150, 0.4);
 }
+
+
+
+
+
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
