@@ -1,6 +1,6 @@
 import Chatbot from './Chatbot';
 import logoImg from './assets/logo.png'
-import careImg from './assets/care.jpeg'
+import careImg from './assets/care.jpg'
 import { useState, useEffect } from 'react'
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, ScatterChart, Scatter, ZAxis } from 'recharts'
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from "react-simple-maps"

@@ -299,7 +299,7 @@ body {
 
 @media (max-width: 768px) {
 
-  /* بنفك القفشة بتاعة الشاشة كاملة ونسمح بالاسكرول */
+
   body,
   html,
   #root,
@@ -309,7 +309,7 @@ body {
     height: auto !important;
   }
 
-  /* بنخلي اللوحة الازاز اللي شايلة الموقع ترص الحاجات تحت بعض */
+
   .glass-panel {
     display: flex !important;
     flex-direction: column !important;
@@ -318,7 +318,7 @@ body {
     min-height: 100vh !important;
   }
 
-  /* بنخلي القائمة الجانبية تاخد عرض الشاشة وتبقى فوق */
+
   .sidebar {
     width: 100% !important;
     position: relative !important;
@@ -327,11 +327,10 @@ body {
     padding-bottom: 20px !important;
   }
 
-  /* بنظبط الشاشة البيضا (المحتوى) عشان تنزل تحت القائمة براحتها */
+
   .content-area {
     width: 100% !important;
     margin-left: 0 !important;
-    /* بنلغي أي مسافة كانت محجوزة للقائمة وهي على الشمال */
     padding: 15px !important;
     box-sizing: border-box !important;
   }
